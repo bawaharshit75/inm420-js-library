@@ -1,0 +1,867 @@
+/* ==========================================================================
+   saudade - travel portugal
+   mobile-first stylesheet: the base rules target small screens, then
+   min-width media queries add tablet (48em) and desktop (64em) layouts.
+
+   contents
+   1. css reset
+   2. design tokens
+   3. base elements
+   4. layout helpers
+   5. buttons & utilities
+   6. header & navigation
+   7. hero (typed.js)
+   8. sections
+   9. destination cards (glide.js + vanilla-tilt.js)
+   10. gallery (fslightbox)
+   11. map (leaflet)
+   12. climate chart (chart.js)
+   13. trip form (cleave.js)
+   14. footer
+   15. media queries: tablet
+   16. media queries: desktop
+   17. reduced motion
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. css reset
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img,
+picture,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+
+/* ==========================================================================
+   2. design tokens
+   ========================================================================== */
+
+:root {
+  /* colours inspired by atlantic water, terracotta roofs and azulejo tiles */
+  --color-ocean: #0b3d5c;
+  --color-ocean-dark: #072a40;
+  --color-terracotta: #d9643a;
+  --color-terracotta-dark: #b54e29;
+  --color-sand: #faf6f0;
+  --color-tile: #eaf0f4;
+  --color-ink: #1d2a33;
+  --color-muted: #55636e;
+  --color-line: #d7dee3;
+  --color-white: #ffffff;
+  --color-error: #b3261e;
+  --color-success: #1e7a46;
+
+  /* typography */
+  --font-display: "Fraunces", georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* spacing scale */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+
+  /* misc */
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --shadow: 0 0.5rem 1.5rem rgb(11 61 92 / 12%);
+  --header-height: 4rem;
+  --max-width: 72rem;
+  --transition: 0.25s ease;
+}
+
+
+/* ==========================================================================
+   3. base elements
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  /* keeps anchored sections from hiding under the sticky header */
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-ink);
+  background-color: var(--color-sand);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-ocean);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-terracotta);
+  outline-offset: 3px;
+}
+
+
+/* ==========================================================================
+   4. layout helpers
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-sm);
+}
+
+/* aos slides elements in from off-screen; clip stops that from ever
+   creating a horizontal scroll bar (clip, unlike hidden, keeps sticky working) */
+.site-main {
+  overflow-x: clip;
+}
+
+
+/* ==========================================================================
+   5. buttons & utilities
+   ========================================================================== */
+
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  color: var(--color-white);
+  background-color: var(--color-terracotta);
+  border-radius: 999px;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.button:hover {
+  background-color: var(--color-terracotta-dark);
+  transform: translateY(-2px);
+}
+
+.button--full {
+  width: 100%;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-sm);
+  z-index: 2000;
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-white);
+  background-color: var(--color-ocean);
+  border-radius: var(--radius-sm);
+}
+
+.skip-link:focus {
+  top: var(--space-xs);
+}
+
+
+/* ==========================================================================
+   6. header & navigation
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* above leaflet's map panes (max 1000 for controls) */
+  background-color: rgb(250 246 240 / 95%);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-ocean);
+}
+
+.logo__dot {
+  color: var(--color-terracotta);
+}
+
+/* hamburger button (mobile only) */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0.6rem;
+}
+
+.nav-toggle__bar {
+  display: block;
+  height: 2px;
+  background-color: var(--color-ocean);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(4) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* mobile menu: a drop-down panel below the header */
+.site-nav {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  display: none;
+  background-color: var(--color-sand);
+  border-bottom: 1px solid var(--color-line);
+  box-shadow: var(--shadow);
+}
+
+.site-nav--open {
+  display: block;
+}
+
+.site-nav__list {
+  padding: var(--space-xs) var(--space-sm) var(--space-sm);
+}
+
+.site-nav__link {
+  display: block;
+  padding: 0.75rem 0;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.site-nav__link:hover {
+  color: var(--color-terracotta);
+}
+
+.site-nav__link--cta {
+  margin-top: var(--space-sm);
+  padding: 0.75rem;
+  text-align: center;
+  color: var(--color-white);
+  background-color: var(--color-terracotta);
+  border: 0;
+  border-radius: 999px;
+}
+
+.site-nav__link--cta:hover {
+  color: var(--color-white);
+  background-color: var(--color-terracotta-dark);
+}
+
+
+/* ==========================================================================
+   7. hero (typed.js)
+   ========================================================================== */
+
+.hero {
+  display: flex;
+  align-items: center;
+  min-height: calc(85vh - var(--header-height));
+  padding-block: var(--space-xl);
+  color: var(--color-white);
+  background:
+    linear-gradient(160deg, rgb(7 42 64 / 85%) 0%, rgb(11 61 92 / 55%) 55%, rgb(217 100 58 / 45%) 100%),
+    url("../images/sunset.svg") center / cover no-repeat;
+}
+
+.hero__eyebrow {
+  margin-bottom: var(--space-xs);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffd8c7;
+}
+
+.hero__title {
+  font-size: clamp(2.5rem, 10vw, 5rem);
+  color: var(--color-white);
+}
+
+.hero__typed {
+  min-height: 3.5em; /* reserves room so the layout does not jump while typing */
+  margin-block: var(--space-sm) var(--space-md);
+  font-size: 1.25rem;
+}
+
+/* typed.js blinking cursor */
+.typed-cursor {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+
+/* ==========================================================================
+   8. sections
+   ========================================================================== */
+
+.section {
+  padding-block: var(--space-xl);
+}
+
+.section--tinted {
+  background-color: var(--color-tile);
+}
+
+.section__header {
+  max-width: 40rem;
+  margin-bottom: var(--space-lg);
+}
+
+.section__title {
+  margin-bottom: var(--space-xs);
+  font-size: clamp(1.9rem, 6vw, 2.75rem);
+}
+
+.section__lead {
+  color: var(--color-muted);
+}
+
+
+/* ==========================================================================
+   9. destination cards (glide.js + vanilla-tilt.js)
+   ========================================================================== */
+
+.glide__slide {
+  height: auto; /* lets cards in a row share the tallest height */
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transform-style: preserve-3d; /* gives vanilla-tilt a 3d context */
+}
+
+.card__img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.card__body {
+  flex: 1;
+  padding: var(--space-md);
+}
+
+.card__tag {
+  display: inline-block;
+  margin-bottom: var(--space-xs);
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-dark);
+  background-color: #fbe6dd;
+  border-radius: 999px;
+}
+
+.card__title {
+  margin-bottom: 0.35rem;
+  font-size: 1.4rem;
+}
+
+.card__text {
+  color: var(--color-muted);
+}
+
+/* carousel controls */
+.glide__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.glide__arrows {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.glide__arrow {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.2rem;
+  color: var(--color-ocean);
+  border: 2px solid var(--color-ocean);
+  border-radius: 50%;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.glide__arrow:hover {
+  color: var(--color-white);
+  background-color: var(--color-ocean);
+}
+
+.glide__bullets {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.glide__bullet {
+  width: 0.65rem;
+  height: 0.65rem;
+  background-color: var(--color-line);
+  border-radius: 999px;
+  transition: width var(--transition), background-color var(--transition);
+}
+
+.glide__bullet--active {
+  width: 1.6rem;
+  background-color: var(--color-terracotta);
+}
+
+
+/* ==========================================================================
+   10. gallery (fslightbox)
+   ========================================================================== */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xs);
+}
+
+.gallery__item--wide {
+  grid-column: span 2;
+}
+
+.gallery__link {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.gallery__img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery__link:hover .gallery__img {
+  transform: scale(1.06);
+}
+
+
+/* ==========================================================================
+   11. map (leaflet)
+   ========================================================================== */
+
+.map-layout {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+/* destination buttons scroll sideways inside their own strip on mobile */
+.map-list {
+  display: flex;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  padding-bottom: var(--space-xs);
+}
+
+.map-list__button {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: left;
+  color: var(--color-ocean);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.map-list__button:hover,
+.map-list__button--active {
+  color: var(--color-white);
+  background-color: var(--color-ocean);
+  border-color: var(--color-ocean);
+}
+
+.map {
+  height: 24rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* custom numbered pin built with L.divIcon */
+.map-pin {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-white);
+  background-color: var(--color-terracotta);
+  border: 3px solid var(--color-white);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 30%);
+}
+
+.map-popup__title {
+  margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--color-ocean);
+}
+
+
+/* ==========================================================================
+   12. climate chart (chart.js)
+   ========================================================================== */
+
+.climate__facts {
+  margin-top: var(--space-sm);
+}
+
+.climate__facts li {
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed var(--color-line);
+}
+
+.chart-card {
+  padding: var(--space-sm);
+  background-color: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* chart.js needs a sized, relatively positioned parent to stay responsive */
+.chart-card__canvas {
+  position: relative;
+  height: 18rem;
+}
+
+.chart-card__caption {
+  margin-top: var(--space-xs);
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+
+/* ==========================================================================
+   13. trip form (cleave.js)
+   ========================================================================== */
+
+.form {
+  max-width: 48rem;
+  padding: var(--space-md);
+  background-color: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.form__grid {
+  display: grid;
+  gap: 0.25rem var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.form__label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.form__optional {
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.form__input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background-color: var(--color-sand);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form__input:focus {
+  border-color: var(--color-ocean);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(11 61 92 / 20%);
+}
+
+.form__input[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.form__error {
+  min-height: 1.4em;
+  font-size: 0.85rem;
+  color: var(--color-error);
+}
+
+.form__status {
+  margin-top: var(--space-sm);
+  font-weight: 500;
+}
+
+.form__status--success {
+  padding: var(--space-sm);
+  color: var(--color-success);
+  background-color: #e3f3ea;
+  border-radius: var(--radius-sm);
+}
+
+
+/* ==========================================================================
+   14. footer
+   ========================================================================== */
+
+.site-footer {
+  padding-block: var(--space-lg);
+  color: #c9d6df;
+  background-color: var(--color-ocean-dark);
+}
+
+.site-footer__inner {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.site-footer__brand {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.site-footer__text {
+  font-size: 0.9rem;
+}
+
+
+/* ==========================================================================
+   15. media queries: tablet (768px and up)
+   ========================================================================== */
+
+@media (min-width: 48em) {
+  .container {
+    padding-inline: var(--space-lg);
+  }
+
+  .hero__typed {
+    min-height: 2em;
+    font-size: 1.5rem;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .form__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form__field--full {
+    grid-column: 1 / -1;
+  }
+
+  .button--full {
+    width: auto;
+  }
+
+  .map {
+    height: 28rem;
+  }
+
+  .chart-card__canvas {
+    height: 22rem;
+  }
+
+  .site-footer__inner {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: var(--space-lg);
+  }
+
+  .site-footer__brand {
+    grid-row: span 2;
+  }
+}
+
+
+/* ==========================================================================
+   16. media queries: desktop (1024px and up)
+   ========================================================================== */
+
+@media (min-width: 64em) {
+  /* swap the hamburger for an inline nav */
+  .nav-toggle {
+    display: none;
+  }
+
+  .site-nav {
+    position: static;
+    display: block;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 0;
+  }
+
+  .site-nav__link {
+    padding: 0.25rem 0;
+    border: 0;
+  }
+
+  .site-nav__link--cta {
+    margin-top: 0;
+    padding: 0.5rem 1.25rem;
+  }
+
+  .section {
+    padding-block: 6rem;
+  }
+
+  /* map list moves to a sidebar next to the map */
+  .map-layout {
+    grid-template-columns: 14rem 1fr;
+  }
+
+  .map-list {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .map-list__button {
+    width: 100%;
+  }
+
+  .map {
+    height: 32rem;
+  }
+
+  .climate {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .climate__intro {
+    margin-bottom: 0;
+  }
+}
+
+
+/* ==========================================================================
+   17. reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

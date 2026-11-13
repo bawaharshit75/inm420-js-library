@@ -1,0 +1,13 @@
+# dependencies (installed with npm install, never committed or zipped)
+node_modules/
+
+# os files
+.DS_Store
+Thumbs.db
+
+# editor folders
+.vscode/
+.idea/
+
+# logs
+*.log

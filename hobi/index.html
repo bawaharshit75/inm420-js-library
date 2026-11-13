@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plan a trip to Portugal: destinations, photo gallery, interactive map, climate guide and a trip planner.">
+    <title>Saudade | Travel Portugal</title>
+
+    <!-- favicon (local file, avoids a 404 in the dev console) -->
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap">
+
+    <!-- 3rd party library stylesheets -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- own stylesheet loads last so it can override library defaults -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- ========== header & navigation ========== -->
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="logo" href="#top">Saudade<span class="logo__dot">.</span></a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span class="visually-hidden">Menu</span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+
+        <nav class="site-nav" id="site-nav" aria-label="Main">
+          <ul class="site-nav__list">
+            <li><a class="site-nav__link" href="#destinations">Destinations</a></li>
+            <li><a class="site-nav__link" href="#gallery">Gallery</a></li>
+            <li><a class="site-nav__link" href="#map">Map</a></li>
+            <li><a class="site-nav__link" href="#climate">When to go</a></li>
+            <li><a class="site-nav__link site-nav__link--cta" href="#plan">Plan a trip</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main" id="main">
+
+      <!-- ========== hero (typed.js) ========== -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="container hero__content">
+          <p class="hero__eyebrow">Portugal travel guide</p>
+          <h1 class="hero__title" id="hero-title">Discover Portugal</h1>
+          <p class="hero__typed">
+            <span class="visually-hidden">Ride Lisbon's trams, surf the Algarve, sip port in Porto.</span>
+            <span id="typed-text" aria-hidden="true"></span>
+          </p>
+          <a class="button" href="#destinations">Start exploring</a>
+        </div>
+      </section>
+
+      <!-- ========== destinations carousel (glide.js + vanilla-tilt.js) ========== -->
+      <section class="section" id="destinations" aria-labelledby="destinations-title">
+        <div class="container">
+          <header class="section__header" data-aos="fade-up">
+            <h2 class="section__title" id="destinations-title">Where to go</h2>
+            <p class="section__lead">Six places that show off Portugal, from Atlantic cliffs to sun-baked vineyards. Swipe or use the arrows.</p>
+          </header>
+
+          <div class="glide" id="destinations-glide" data-aos="fade-up" data-aos-delay="100">
+            <div class="glide__track" data-glide-el="track">
+              <ul class="glide__slides">
+                <li class="glide__slide">
+                  <article class="card js-tilt">
+                    <img class="card__img" src="/assets/images/lisbon.svg" alt="Yellow tram climbing a narrow street in Lisbon" width="600" height="400" loading="lazy">
+                    <div class="card__body">
+                      <p class="card__tag">City</p>
+                      <h3 class="card__title">Lisbon</h3>
+                      <p class="card__text">Hilltop viewpoints, tram 28 and warm pastéis de nata straight from the oven.</p>
+                    </div>
+                  </article>
+                </li>
+                <li class="glide__slide">
+                  <article class="card js-tilt">
+                    <img class="card__img" src="/assets/images/sintra.svg" alt="Colourful Pena Palace on a forested hill in Sintra" width="600" height="400" loading="lazy">
+                    <div class="card__body">
+                      <p class="card__tag">Day trip</p>
+                      <h3 class="card__title">Sintra</h3>
+                      <p class="card__text">Fairy-tale palaces and misty gardens just forty minutes from Lisbon.</p>
+                    </div>
+                  </article>
+                </li>
+                <li class="glide__slide">
+                  <article class="card js-tilt">
+                    <img class="card__img" src="/assets/images/porto.svg" alt="Riverside houses along the Douro in Porto" width="600" height="400" loading="lazy">
+                    <div class="card__body">
+                      <p class="card__tag">City</p>
+                      <h3 class="card__title">Porto</h3>
+                      <p class="card__text">Tiled churches, riverside cafés and port-wine cellars in Gaia.</p>
+                    </div>
+                  </article>
+                </li>
+                <li class="glide__slide">
+                  <article class="card js-tilt">
+                    <img class="card__img" src="/assets/images/douro.svg" alt="Terraced vineyards above the Douro river" width="600" height="400" loading="lazy">
+                    <div class="card__body">
+                      <p class="card__tag">Wine country</p>
+                      <h3 class="card__title">Douro Valley</h3>
+                      <p class="card__text">Terraced vineyards, slow river cruises and quintas for tastings.</p>
+                    </div>
+                  </article>
+                </li>
+                <li class="glide__slide">
+                  <article class="card js-tilt">
+                    <img class="card__img" src="/assets/images/lagos.svg" alt="Golden sea cliffs and turquoise water near Lagos" width="600" height="400" loading="lazy">
+                    <div class="card__body">
+                      <p class="card__tag">Beach</p>
+                      <h3 class="card__title">Lagos</h3>
+                      <p class="card__text">Golden sea stacks, kayak-only grottos and surf breaks in the Algarve.</p>
+                    </div>
+                  </article>
+                </li>
+                <li class="glide__slide">
+                  <article class="card js-tilt">
+                    <img class="card__img" src="/assets/images/evora.svg" alt="Whitewashed streets of Évora" width="600" height="400" loading="lazy">
+                    <div class="card__body">
+                      <p class="card__tag">History</p>
+                      <h3 class="card__title">Évora</h3>
+                      <p class="card__text">A walled Alentejo town with a Roman temple and a chapel of bones.</p>
+                    </div>
+                  </article>
+                </li>
+              </ul>
+            </div>
+
+            <div class="glide__controls">
+              <div class="glide__arrows" data-glide-el="controls">
+                <button class="glide__arrow glide__arrow--left" type="button" data-glide-dir="&lt;" aria-label="Previous destination">&#8592;</button>
+                <button class="glide__arrow glide__arrow--right" type="button" data-glide-dir="&gt;" aria-label="Next destination">&#8594;</button>
+              </div>
+              <div class="glide__bullets" data-glide-el="controls[nav]">
+                <button class="glide__bullet" type="button" data-glide-dir="=0" aria-label="Go to slide 1"></button>
+                <button class="glide__bullet" type="button" data-glide-dir="=1" aria-label="Go to slide 2"></button>
+                <button class="glide__bullet" type="button" data-glide-dir="=2" aria-label="Go to slide 3"></button>
+                <button class="glide__bullet" type="button" data-glide-dir="=3" aria-label="Go to slide 4"></button>
+                <button class="glide__bullet" type="button" data-glide-dir="=4" aria-label="Go to slide 5"></button>
+                <button class="glide__bullet" type="button" data-glide-dir="=5" aria-label="Go to slide 6"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== photo gallery (fslightbox) ========== -->
+      <section class="section section--tinted" id="gallery" aria-labelledby="gallery-title">
+        <div class="container">
+          <header class="section__header" data-aos="fade-up">
+            <h2 class="section__title" id="gallery-title">Postcards from Portugal</h2>
+            <p class="section__lead">Tap any photo to open it full screen, then swipe through the set.</p>
+          </header>
+
+          <ul class="gallery">
+            <li class="gallery__item gallery__item--wide" data-aos="zoom-in">
+              <a class="gallery__link" href="/assets/images/sunset.svg" data-fslightbox="portugal" data-type="image">
+                <img class="gallery__img" src="/assets/images/sunset.svg" alt="Sunset over Lisbon rooftops" width="600" height="400" loading="lazy">
+              </a>
+            </li>
+            <li class="gallery__item" data-aos="zoom-in" data-aos-delay="50">
+              <a class="gallery__link" href="/assets/images/azulejo.svg" data-fslightbox="portugal" data-type="image">
+                <img class="gallery__img" src="/assets/images/azulejo.svg" alt="Blue azulejo tiles on a church wall" width="600" height="400" loading="lazy">
+              </a>
+            </li>
+            <li class="gallery__item" data-aos="zoom-in" data-aos-delay="100">
+              <a class="gallery__link" href="/assets/images/boats.svg" data-fslightbox="portugal" data-type="image">
+                <img class="gallery__img" src="/assets/images/boats.svg" alt="Fishing boats on an Algarve beach" width="600" height="400" loading="lazy">
+              </a>
+            </li>
+            <li class="gallery__item" data-aos="zoom-in" data-aos-delay="150">
+              <a class="gallery__link" href="/assets/images/cork.svg" data-fslightbox="portugal" data-type="image">
+                <img class="gallery__img" src="/assets/images/cork.svg" alt="Cork oak trees in the Alentejo plains" width="600" height="400" loading="lazy">
+              </a>
+            </li>
+            <li class="gallery__item" data-aos="zoom-in" data-aos-delay="200">
+              <a class="gallery__link" href="/assets/images/rabelo.svg" data-fslightbox="portugal" data-type="image">
+                <img class="gallery__img" src="/assets/images/rabelo.svg" alt="Rabelo boats moored on the Douro in Porto" width="600" height="400" loading="lazy">
+              </a>
+            </li>
+            <li class="gallery__item gallery__item--wide" data-aos="zoom-in" data-aos-delay="250">
+              <a class="gallery__link" href="/assets/images/cabo-da-roca.svg" data-fslightbox="portugal" data-type="image">
+                <img class="gallery__img" src="/assets/images/cabo-da-roca.svg" alt="Atlantic waves crashing at Cabo da Roca" width="600" height="400" loading="lazy">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ========== interactive map (leaflet) ========== -->
+      <section class="section" id="map" aria-labelledby="map-title">
+        <div class="container">
+          <header class="section__header" data-aos="fade-up">
+            <h2 class="section__title" id="map-title">Find your way</h2>
+            <p class="section__lead">Pick a destination to fly there on the map. Pinch or use the + / − buttons to zoom.</p>
+          </header>
+
+          <div class="map-layout" data-aos="fade-up" data-aos-delay="100">
+            <ul class="map-list" id="map-list" aria-label="Destinations on the map"></ul>
+            <div class="map" id="leaflet-map" role="region" aria-label="Map of Portugal destinations"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== climate chart (chart.js) ========== -->
+      <section class="section section--tinted" id="climate" aria-labelledby="climate-title">
+        <div class="container climate">
+          <header class="section__header climate__intro" data-aos="fade-up">
+            <h2 class="section__title" id="climate-title">When to go</h2>
+            <p class="section__lead">Lisbon gets around 290 sunny days a year. Summers are hot and dry; late spring and early autumn are the sweet spot for warm days and thinner crowds.</p>
+            <ul class="climate__facts">
+              <li><strong>Best overall:</strong> May &amp; September</li>
+              <li><strong>Beach season:</strong> June to September</li>
+              <li><strong>Wettest:</strong> November to January</li>
+            </ul>
+          </header>
+
+          <figure class="chart-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="chart-card__canvas">
+              <canvas id="climate-chart" role="img" aria-label="Chart of Lisbon's average monthly high temperature and rainfall"></canvas>
+            </div>
+            <figcaption class="chart-card__caption">Approximate Lisbon climate averages: high temperature (°C) and rainfall (mm).</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ========== trip planner form (cleave.js) ========== -->
+      <section class="section" id="plan" aria-labelledby="plan-title">
+        <div class="container plan">
+          <header class="section__header" data-aos="fade-up">
+            <h2 class="section__title" id="plan-title">Plan your trip</h2>
+            <p class="section__lead">Tell us your dates and budget. Fields format themselves as you type.</p>
+          </header>
+
+          <form class="form" id="trip-form" novalidate data-aos="fade-up" data-aos-delay="100">
+            <div class="form__grid">
+              <div class="form__field">
+                <label class="form__label" for="full-name">Full name</label>
+                <input class="form__input" id="full-name" name="full-name" type="text" autocomplete="name" required aria-describedby="full-name-error">
+                <p class="form__error" id="full-name-error" aria-live="polite"></p>
+              </div>
+
+              <div class="form__field">
+                <label class="form__label" for="email">Email</label>
+                <input class="form__input" id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-error">
+                <p class="form__error" id="email-error" aria-live="polite"></p>
+              </div>
+
+              <div class="form__field">
+                <label class="form__label" for="phone">Phone <span class="form__optional">(optional)</span></label>
+                <input class="form__input" id="phone" name="phone" type="tel" autocomplete="tel" placeholder="416 555 0123" aria-describedby="phone-error">
+                <p class="form__error" id="phone-error" aria-live="polite"></p>
+              </div>
+
+              <div class="form__field">
+                <label class="form__label" for="destination">Main destination</label>
+                <select class="form__input" id="destination" name="destination" required aria-describedby="destination-error">
+                  <option value="">Choose one</option>
+                  <option>Lisbon</option>
+                  <option>Sintra</option>
+                  <option>Porto</option>
+                  <option>Douro Valley</option>
+                  <option>Lagos</option>
+                  <option>Évora</option>
+                </select>
+                <p class="form__error" id="destination-error" aria-live="polite"></p>
+              </div>
+
+              <div class="form__field">
+                <label class="form__label" for="depart">Departure date</label>
+                <input class="form__input" id="depart" name="depart" type="text" inputmode="numeric" placeholder="yyyy-mm-dd" required aria-describedby="depart-error">
+                <p class="form__error" id="depart-error" aria-live="polite"></p>
+              </div>
+
+              <div class="form__field">
+                <label class="form__label" for="return">Return date</label>
+                <input class="form__input" id="return" name="return" type="text" inputmode="numeric" placeholder="yyyy-mm-dd" required aria-describedby="return-error">
+                <p class="form__error" id="return-error" aria-live="polite"></p>
+              </div>
+
+              <div class="form__field form__field--full">
+                <label class="form__label" for="budget">Budget per person (CAD) <span class="form__optional">(optional)</span></label>
+                <input class="form__input" id="budget" name="budget" type="text" inputmode="numeric" placeholder="$2,500" aria-describedby="budget-error">
+                <p class="form__error" id="budget-error" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <button class="button button--full" type="submit">Get my itinerary</button>
+            <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========== footer ========== -->
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <p class="site-footer__brand">Saudade<span class="logo__dot">.</span></p>
+        <p class="site-footer__text">Built with Glide.js, fslightbox, Leaflet, Chart.js, AOS, Cleave.js, Typed.js and Vanilla-Tilt.js.</p>
+        <p class="site-footer__text">&copy; <span id="year">2026</span> Harshit Bawa. Original illustrations made for this project. Map data &copy; OpenStreetMap contributors.</p>
+      </div>
+    </footer>
+
+    <!-- ========== scripts: 3rd party libraries, then own script last ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/glide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fslightbox@3.3.2/index.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/addons/cleave-phone.ca.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

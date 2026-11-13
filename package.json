@@ -1,0 +1,15 @@
+{
+  "name": "inm420-js-library",
+  "version": "1.0.0",
+  "description": "Saudade: a mobile-first Portugal travel page built with eight 3rd party JavaScript libraries.",
+  "scripts": {
+    "start": "lite-server --baseDir=\"hobi\""
+  },
+  "author": "Harshit Bawa",
+  "license": "private",
+  "private": true,
+  "type": "commonjs",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
