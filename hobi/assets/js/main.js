@@ -1,20 +1,3 @@
-/* ==========================================================================
-   saudade - travel portugal
-   main.js: sets up the navigation and every 3rd party library on the page.
-
-   libraries used
-   1. glide.js         - destinations carousel
-   2. fslightbox       - full screen photo gallery
-   3. leaflet          - interactive map
-   4. chart.js         - climate chart
-   5. aos              - animate on scroll
-   6. cleave.js        - input formatting in the trip form
-   7. typed.js         - typing effect in the hero
-   8. vanilla-tilt.js  - 3d tilt on the destination cards
-
-   each init function first checks that its library loaded and that its
-   target element exists, so one failed cdn request never breaks the rest.
-   ========================================================================== */
 
 'use strict';
 

@@ -1,32 +1,4 @@
-/* ==========================================================================
-   saudade - travel portugal
-   mobile-first stylesheet: the base rules target small screens, then
-   min-width media queries add tablet (48em) and desktop (64em) layouts.
 
-   contents
-   1. css reset
-   2. design tokens
-   3. base elements
-   4. layout helpers
-   5. buttons & utilities
-   6. header & navigation
-   7. hero (typed.js)
-   8. sections
-   9. destination cards (glide.js + vanilla-tilt.js)
-   10. gallery (fslightbox)
-   11. map (leaflet)
-   12. climate chart (chart.js)
-   13. trip form (cleave.js)
-   14. footer
-   15. media queries: tablet
-   16. media queries: desktop
-   17. reduced motion
-   ========================================================================== */
-
-
-/* ==========================================================================
-   1. css reset
-   ========================================================================== */
 
 *,
 *::before,
